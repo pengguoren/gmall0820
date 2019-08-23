@@ -1,6 +1,6 @@
-package com.cq.gmall.user.service;
+package com.cq.gmall.service;
 
-import com.cq.gmall.user.bean.UmsMemberReceiveAddress;
+import com.cq.gmall.bean.UmsMemberReceiveAddress;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
-package com.cq.gmall.user.service;
+package com.cq.gmall.service;
 
 
-import com.cq.gmall.user.bean.UmsMember;
+import com.cq.gmall.bean.UmsMember;
 
 import java.util.List;
 
