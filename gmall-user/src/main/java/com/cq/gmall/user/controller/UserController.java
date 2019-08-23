@@ -1,9 +1,9 @@
 package com.cq.gmall.user.controller;
 
-import com.cq.gmall.user.bean.UmsMember;
-import com.cq.gmall.user.bean.UmsMemberReceiveAddress;
-import com.cq.gmall.user.service.UmsMemberReceiveAddressService;
-import com.cq.gmall.user.service.UserService;
+import com.cq.gmall.bean.UmsMember;
+import com.cq.gmall.bean.UmsMemberReceiveAddress;
+import com.cq.gmall.service.UmsMemberReceiveAddressService;
+import com.cq.gmall.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

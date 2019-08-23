@@ -1,8 +1,8 @@
 package com.cq.gmall.user.service.impl;
 
-import com.cq.gmall.user.bean.UmsMemberReceiveAddress;
+import com.cq.gmall.bean.UmsMemberReceiveAddress;
 import com.cq.gmall.user.mapper.UmsMemberReceiveAddressMapper;
-import com.cq.gmall.user.service.UmsMemberReceiveAddressService;
+import com.cq.gmall.service.UmsMemberReceiveAddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

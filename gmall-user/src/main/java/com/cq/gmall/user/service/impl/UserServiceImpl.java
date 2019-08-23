@@ -1,8 +1,8 @@
 package com.cq.gmall.user.service.impl;
 
-import com.cq.gmall.user.bean.UmsMember;
+import com.cq.gmall.bean.UmsMember;
 import com.cq.gmall.user.mapper.UserMapper;
-import com.cq.gmall.user.service.UserService;
+import com.cq.gmall.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,6 +1,6 @@
 package com.cq.gmall.user.mapper;
 
-import com.cq.gmall.user.bean.UmsMember;
+import com.cq.gmall.bean.UmsMember;
 
 import java.util.List;
 
