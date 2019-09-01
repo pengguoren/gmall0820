@@ -2,6 +2,7 @@ package com.cq.gmall.service;
 
 import com.cq.gmall.bean.PmsBaseAttrInfo;
 import com.cq.gmall.bean.PmsBaseAttrValue;
+import com.cq.gmall.bean.PmsBaseSaleAttr;
 
 import java.util.List;
 
@@ -15,4 +16,6 @@ public interface AttrService {
     String saveAttrInfo(PmsBaseAttrInfo pmsBaseAttrInfo);
 
     List<PmsBaseAttrValue> getAttrValueList(String attrId);
+
+    List<PmsBaseSaleAttr> baseSaleAttrList();
 }
