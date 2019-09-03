@@ -60,6 +60,10 @@ public class AttrController {
         return pmsBaseAttrInfos;
     }
 
+    /**
+     * 查询销售属性列表
+     * @return
+     */
     @RequestMapping("baseSaleAttrList")
     @ResponseBody
     public List<PmsBaseSaleAttr> baseSaleAttrList() {
