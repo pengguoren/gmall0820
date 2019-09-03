@@ -1,8 +1,8 @@
 package com.cq.gmall.manage.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.cq.gmall.bean.PmsBaseSaleAttr;
-import com.cq.gmall.bean.PmsProductInfo;
+import com.cq.gmall.bean.*;
+import com.cq.gmall.manage.util.PmsUploadUtil;
 import com.cq.gmall.service.SpuService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -40,17 +40,47 @@ public class SpuController {
      */
     @RequestMapping("saveSpuInfo")
     @ResponseBody
-    public List<PmsBaseSaleAttr> saveSpuInfo(@RequestBody PmsProductInfo pmsProductInfo) {
-        return null;
+    public String saveSpuInfo(@RequestBody PmsProductInfo pmsProductInfo) {
+        spuService.saveSpuInfo(pmsProductInfo);
+        return "success";
     }
+
+    /**
+     * spu销售属性列表查询
+     * @param spuId
+     * @return
+     */
+    @RequestMapping("spuSaleAttrList")
+    @ResponseBody
+    public List<PmsProductSaleAttr> spuSaleAttrList(String spuId) {
+        List<PmsProductSaleAttr> pmsProductSaleAttrs = spuService.spuSaleAttrList(spuId);
+        return pmsProductSaleAttrs;
+    }
+
+    /**
+     * spu图片列表查询
+     * @param spuId
+     * @return
+     */
+    @RequestMapping("spuImageList")
+    @ResponseBody
+    public List<PmsProductImage> spuImageList(String spuId) {
+        List<PmsProductImage> pmsProductImages = spuService.spuImageList(spuId);
+        return pmsProductImages;
+    }
+
+    /**
+     * 媒体文件上传到fastdfs上
+     * @param multipartFile
+     * @return
+     */
     @RequestMapping("fileUpload")
     @ResponseBody
     public String fileUpload(@RequestParam("file")MultipartFile multipartFile) {
         //将图片或者音频上传到分布式的文件存储系统
-
+        String imgUrl = PmsUploadUtil.uploadImage(multipartFile);
         //将图片的存储路径返回给页面
-        String s = "http://192.168.67.163/group1/M00/00/00/wKhDo1qmZmKAEi7GAAAoCdAcm0Q483.jpg";
-        return s;
+        return imgUrl;
     }
 
 }
