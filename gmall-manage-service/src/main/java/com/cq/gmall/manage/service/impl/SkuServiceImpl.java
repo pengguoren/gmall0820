@@ -51,4 +51,28 @@ public class SkuServiceImpl implements SkuService {
             pmsSkuImageMapper.insertSelective(pmsSkuImage);
         }
     }
+
+    @Override
+    public PmsSkuInfo getSkuById(String skuId) {
+        //sku商品对象
+        PmsSkuInfo pmsSkuInfo = new PmsSkuInfo();
+        pmsSkuInfo.setId(skuId);
+        PmsSkuInfo skuInfo = pmsSkuInfoMapper.selectOne(pmsSkuInfo);
+        //sku图片集合
+        PmsSkuImage pmsSkuImage = new PmsSkuImage();
+        pmsSkuImage.setSkuId(skuId);
+        List<PmsSkuImage> pmsSkuImages = pmsSkuImageMapper.select(pmsSkuImage);
+        skuInfo.setSkuImageList(pmsSkuImages);
+        //sku平台属性
+       /* PmsSkuAttrValue pmsSkuAttrValue = new PmsSkuAttrValue();
+        pmsSkuAttrValue.setSkuId(skuId);
+        List<PmsSkuAttrValue> pmsSkuAttrValues = pmsSkuAttrValueMapper.select(pmsSkuAttrValue);
+        skuInfo.setSkuAttrValueList(pmsSkuAttrValues);*/
+        //sku销售属性
+       /* PmsSkuSaleAttrValue pmsSkuSaleAttrValue = new PmsSkuSaleAttrValue();
+        pmsSkuAttrValue.setSkuId(skuId);
+        List<PmsSkuSaleAttrValue> pmsSkuSaleAttrValues = pmsSkuSaleAttrValueMapper.select(pmsSkuSaleAttrValue);
+        skuInfo.setSkuSaleAttrValueList(pmsSkuSaleAttrValues);*/
+        return skuInfo;
+    }
 }

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cq.gmall.manage.mapper.PmsProductSaleAttrMapper">
+    <!-- SQL语句 -->
+    <select id="selectSpuSaleAttrListCheckBySku" resultMap="selectSpuSaleAttrListCheckBySkuMap">
+        SELECT
+			sa.id sa_id,sav.id sav_id,sa.*,sav.*,if(ssa.sku_id ,1,0) as isChecked
+        FROM
+            pms_product_sale_attr sa
+        INNER JOIN pms_product_sale_attr_value sav ON sa.product_id=sav.product_id
+        AND sa.sale_attr_id=sav.sale_attr_id
+        AND sa.product_id=#{productId}
+        LEFT JOIN pms_sku_sale_attr_value ssa ON ssa.sale_attr_value_id=sav.id
+        AND ssa.sku_id=#{skuId}
+        ORDER BY sav.id
+    </select>
+
+    <resultMap id="selectSpuSaleAttrListCheckBySkuMap" type="com.cq.gmall.bean.PmsProductSaleAttr" autoMapping="true">
+
+        <result column="sa_id" property="id"></result>
+
+        <collection property="spuSaleAttrValueList" ofType="com.cq.gmall.bean.PmsProductSaleAttrValue" autoMapping="true">
+            <result column="sav_id" property="id"></result>
+        </collection>
+
+    </resultMap>
+</mapper>

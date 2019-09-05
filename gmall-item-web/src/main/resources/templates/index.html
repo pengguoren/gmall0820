@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<p th:text="${hello}">模板值</p>
+
+//循环
+<p th:each="str:${list}" >
+    <input  th:value="${str}" />
+</p>
+
+//判断
+<input type="checkbox" th:checked="(${check}=='1')?'checked':''"  >
+
+<a th:href="'javascript:f(\''+${hello}+'\');'"> 提交</a>
+
+<script language="JavaScript">
+    function f(hello) {
+        alert(hello);
+    }
+</script>
+
+</body>
+</html>
