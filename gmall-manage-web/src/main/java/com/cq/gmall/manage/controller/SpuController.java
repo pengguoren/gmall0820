@@ -2,7 +2,7 @@ package com.cq.gmall.manage.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.cq.gmall.bean.*;
-import com.cq.gmall.manage.util.PmsUploadUtil;
+import com.cq.gmall.util.PmsUploadUtil;
 import com.cq.gmall.service.SpuService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

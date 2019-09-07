@@ -4,14 +4,14 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.cq.gmall</groupId>
-        <artifactId>gmall-service-util</artifactId>
+        <artifactId>gmall-parent</artifactId>
         <version>1.0-SNAPSHOT</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.cq.gmall</groupId>
-    <artifactId>gmall-manage-service</artifactId>
+    <artifactId>gmall-redisson-test</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>gmall-manage-service</name>
+    <name>gmall-redisson-test</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
@@ -21,15 +21,21 @@
     <dependencies>
         <dependency>
             <groupId>com.cq.gmall</groupId>
-            <artifactId>gmall-service-util</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.cq.gmall</groupId>
             <artifactId>gmall-api</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.cq.gmall</groupId>
+            <artifactId>gmall-service-util</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.cq.gmall</groupId>
+            <artifactId>gmall-web-util</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <build>
