@@ -12,6 +12,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.TermQueryBuilder;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.bucket.terms.TermsBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.highlight.HighlightBuilder;
 import org.elasticsearch.search.sort.SortOrder;
@@ -60,8 +62,7 @@ public class SearchServiceImpl implements SearchService {
         //用api执行复杂查询
         String catalog3Id = pmsSearchParam.getCatalog3Id();
         String keyword = pmsSearchParam.getKeyword();
-        List<PmsSkuSaleAttrValue> skuSaleAttrValueList = pmsSearchParam.getSkuSaleAttrValueList();
-
+        String[] valueIds = pmsSearchParam.getValueId();
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         //bool
         BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
@@ -70,9 +71,9 @@ public class SearchServiceImpl implements SearchService {
             TermQueryBuilder termQueryBuilder = new TermQueryBuilder("catalog3Id", catalog3Id);
             boolQueryBuilder.filter(termQueryBuilder);
         }
-        if (skuSaleAttrValueList != null) {
-            for (PmsSkuSaleAttrValue pmsSkuSaleAttrValue : skuSaleAttrValueList) {
-                TermQueryBuilder termQueryBuilder = new TermQueryBuilder("skuAttrValueList.valueId", pmsSkuSaleAttrValue.getSaleAttrValueId());
+        if (valueIds != null) {
+            for (String valueId : valueIds) {
+                TermQueryBuilder termQueryBuilder = new TermQueryBuilder("skuAttrValueList.valueId", valueId);
                 boolQueryBuilder.filter(termQueryBuilder);
             }
         }
@@ -94,6 +95,9 @@ public class SearchServiceImpl implements SearchService {
         highlightBuilder.postTags("</span>");
         highlightBuilder.field("skuName");
         searchSourceBuilder.highlight(highlightBuilder);
+        //aggs
+       /* TermsBuilder groupby_attr = AggregationBuilders.terms("groupby_attr").field("skuAttrValueList.valueId");
+        searchSourceBuilder.aggregation(groupby_attr);*/
         System.out.println(searchSourceBuilder.toString());
         Search build = new Search.Builder(searchSourceBuilder.toString()).addIndex("gmall0105").addType("PmsSkuInfo").build();
         return build;

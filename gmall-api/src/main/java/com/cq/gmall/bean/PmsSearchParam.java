@@ -12,7 +12,7 @@ public class PmsSearchParam implements Serializable {
     String keyword;
 
     String catalog3Id;
-    List<PmsSkuSaleAttrValue> skuSaleAttrValueList;
+    String [] valueId;
 
     public String getKeyword() {
         return keyword;
@@ -30,11 +30,11 @@ public class PmsSearchParam implements Serializable {
         this.catalog3Id = catalog3Id;
     }
 
-    public List<PmsSkuSaleAttrValue> getSkuSaleAttrValueList() {
-        return skuSaleAttrValueList;
+    public String[] getValueId() {
+        return valueId;
     }
 
-    public void setSkuSaleAttrValueList(List<PmsSkuSaleAttrValue> skuSaleAttrValueList) {
-        this.skuSaleAttrValueList = skuSaleAttrValueList;
+    public void setValueId(String[] valueId) {
+        this.valueId = valueId;
     }
 }
