@@ -2,6 +2,7 @@ package com.cq.gmall.cart.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSON;
+import com.cq.gmall.annotations.LoginRequired;
 import com.cq.gmall.bean.OmsCartItem;
 import com.cq.gmall.bean.PmsSkuInfo;
 import com.cq.gmall.service.CartService;
@@ -32,10 +33,22 @@ public class CartController {
 
 
 
-    @RequestMapping("checkCart")
-    public String checkCart( String isChecked,String skuId, ModelMap modelMap) {
-        String memberId = "1";
+    @RequestMapping("toTrade")
+    @LoginRequired(loginSuccess = true)
+    public String toTrade( HttpServletRequest request, HttpServletResponse response,ModelMap ModelMap) {
+        String memberId = (String)request.getAttribute("memberId");
+        String nickname = (String)request.getAttribute("nickname");
+        return "toTrade";
+    }
 
+
+    @RequestMapping("checkCart")
+    @LoginRequired(loginSuccess = false)
+    public String checkCart(HttpServletRequest request, String isChecked,String skuId, ModelMap modelMap) {
+        String memberId = (String)request.getAttribute("memberId");
+        String nickname = (String)request.getAttribute("nickname");
+
+        List<OmsCartItem> omsCartItems = new ArrayList<>();
         //调用服务，修改状态
         if (StringUtils.isNotBlank(memberId)){
             OmsCartItem omsCartItem = new OmsCartItem();
@@ -43,9 +56,13 @@ public class CartController {
             omsCartItem.setMemberId(memberId);
             omsCartItem.setProductSkuId(skuId);
             cartService.checkCart(omsCartItem);
+            //将最新的数据从缓存中查出，渲染给内嵌页
+            omsCartItems = cartService.getCartList(memberId);
+        }else{
+            //用户未登录,缓存中也没有数据，从cookie中获取数据
+            String cartListCookie = CookieUtil.getCookieValue(request, "cartListCookie", true);
+            omsCartItems = JSON.parseArray(cartListCookie, OmsCartItem.class);
         }
-        //将最新的数据从缓存中查出，渲染给内嵌页
-        List<OmsCartItem> omsCartItems = cartService.getCartList(memberId);
         for (OmsCartItem omsCartItem : omsCartItems) {
             omsCartItem.setTotalPrice(omsCartItem.getPrice().multiply(omsCartItem.getQuantity()));
         }
@@ -66,10 +83,12 @@ public class CartController {
     }
 
     @RequestMapping("cartList")
+    @LoginRequired(loginSuccess = false)
     public String cartList( HttpServletRequest request, ModelMap modelMap) {
 
         List<OmsCartItem> omsCartItems = new ArrayList<>();
-        String memberId = "1";
+        String memberId = (String)request.getAttribute("memberId");
+        String nickname = (String)request.getAttribute("nickname");
         if(StringUtils.isNotBlank(memberId)){
             //用户一登陆
             //购物车列表从缓存中取出
@@ -90,6 +109,7 @@ public class CartController {
     }
 
     @RequestMapping("addToCart")
+    @LoginRequired(loginSuccess = false)
     public String addToCart(HttpServletRequest request, HttpServletResponse response,String skuId,int quantity) {
         //根据skuId查询商品详细信息
         PmsSkuInfo skuInfo = skuService.getSkuById(skuId);
@@ -109,7 +129,8 @@ public class CartController {
         omsCartItem.setMemberNickname("66");
         omsCartItem.setIsChecked("1");
         //判断用户是否登陆
-        String memberId = "1";
+        String memberId = (String)request.getAttribute("memberId");
+        String nickname = (String)request.getAttribute("nickname");
         if (StringUtils.isBlank(memberId)) {
             //用户未登录
             List<OmsCartItem> omsCartItems = new ArrayList<>();

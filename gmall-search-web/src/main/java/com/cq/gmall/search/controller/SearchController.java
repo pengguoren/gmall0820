@@ -1,6 +1,7 @@
 package com.cq.gmall.search.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.cq.gmall.annotations.LoginRequired;
 import com.cq.gmall.bean.*;
 import com.cq.gmall.service.AttrService;
 import com.cq.gmall.service.SearchService;
@@ -126,6 +127,7 @@ public class SearchController {
      * @return
      */
     @RequestMapping("index")
+    @LoginRequired(loginSuccess = false)
     public String index() {
         return "index";
     }
