@@ -9,5 +9,10 @@ import java.util.List;
  * @data 2019/8/22 17:08
  */
 public interface UmsMemberReceiveAddressService {
+    /**
+     * 根据用户id查询收货地址列表
+     * @param memberId
+     * @return
+     */
     List<UmsMemberReceiveAddress> getReceiveAddressByMemberId(String memberId);
 }

@@ -59,7 +59,7 @@ public class CartServiceImpl implements CartService {
         try {
             jedis = redisUtil.getJedis();
             //删除缓存
-            jedis.del("1");
+            jedis.del(memberId);
             Map<String, String> map = new HashMap<>();
             for (OmsCartItem cartItem : omsCartItems) {
                 map.put(cartItem.getProductSkuId(), JSON.toJSONString(cartItem));
@@ -85,6 +85,13 @@ public class CartServiceImpl implements CartService {
                 omsCartItems.add(omsCartItem);
             }
 
+            //缓存失效时查询数据库
+            if (omsCartItems==null) {
+                OmsCartItem omsCartItem = new OmsCartItem();
+                omsCartItem.setMemberId(memberId);
+                omsCartItems = omsCartItemMapper.select(omsCartItem);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -100,6 +107,14 @@ public class CartServiceImpl implements CartService {
         omsCartItemMapper.updateByExampleSelective(omsCartItem,e);
         //同步缓存
        flushCartCache(omsCartItem.getMemberId());
+    }
+
+    @Override
+    public void removeCartData(String productSkuId) {
+        OmsCartItem omsCartItem = new OmsCartItem();
+        omsCartItem.setProductSkuId(productSkuId);
+        omsCartItemMapper.delete(omsCartItem);
+        //刷新缓存
     }
 
 

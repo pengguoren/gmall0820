@@ -35,7 +35,7 @@ public class TestOauth2 {
         paramMap.put("client_secret","6d148a069ffd6a2defb29f8f83f631d3");
         paramMap.put("grant_type","authorization_code");
         paramMap.put("redirect_uri","http://passport.gmall.com:8085/vlogin");
-        // 授权有效期内可以使用，每新生成一次授权码，说明用户对第三方数据进行重启授权，之前的access_token和授权码全部过期
+
         paramMap.put("code","3a6c4695043e50418fda4ce520044715");
         String access_token_json = HttpclientUtil.doPost(s3, paramMap);
 

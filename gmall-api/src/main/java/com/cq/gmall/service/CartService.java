@@ -17,7 +17,18 @@ public interface CartService {
 
     void flushCartCache(String memberId);
 
+    /**
+     * 根据用户id获得要购买的商品列表(购物车)，和总价格
+     * @param memberId
+     * @return
+     */
     List<OmsCartItem> getCartList(String memberId);
 
     void checkCart(OmsCartItem omsCartItem);
+
+    /**
+     * 根据skuid删除购物车数据并刷新缓存
+     * @param productSkuId
+     */
+    void removeCartData(String productSkuId);
 }

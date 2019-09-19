@@ -31,26 +31,15 @@ public class CartController {
     @Reference
     CartService cartService;
 
-
-
-    @RequestMapping("toTrade")
-    @LoginRequired(loginSuccess = true)
-    public String toTrade( HttpServletRequest request, HttpServletResponse response,ModelMap ModelMap) {
-        String memberId = (String)request.getAttribute("memberId");
-        String nickname = (String)request.getAttribute("nickname");
-        return "toTrade";
-    }
-
-
     @RequestMapping("checkCart")
     @LoginRequired(loginSuccess = false)
-    public String checkCart(HttpServletRequest request, String isChecked,String skuId, ModelMap modelMap) {
+    public String checkCart(HttpServletRequest request,HttpServletResponse response, String isChecked,String skuId, ModelMap modelMap) {
         String memberId = (String)request.getAttribute("memberId");
         String nickname = (String)request.getAttribute("nickname");
 
         List<OmsCartItem> omsCartItems = new ArrayList<>();
-        //调用服务，修改状态
         if (StringUtils.isNotBlank(memberId)){
+            //调用服务，修改状态
             OmsCartItem omsCartItem = new OmsCartItem();
             omsCartItem.setIsChecked(isChecked);
             omsCartItem.setMemberId(memberId);
@@ -62,17 +51,25 @@ public class CartController {
             //用户未登录,缓存中也没有数据，从cookie中获取数据
             String cartListCookie = CookieUtil.getCookieValue(request, "cartListCookie", true);
             omsCartItems = JSON.parseArray(cartListCookie, OmsCartItem.class);
+            if (omsCartItems != null) {
+                for (OmsCartItem omsCartItem : omsCartItems) {
+                    if (omsCartItem.getProductSkuId().equals(skuId)) {
+                        omsCartItem.setIsChecked(isChecked);
+                    }
+                }
+            }
+            CookieUtil.setCookie(request,response,"cartListCookie",JSON.toJSONString(omsCartItems),60*60*24,true);
         }
         for (OmsCartItem omsCartItem : omsCartItems) {
             omsCartItem.setTotalPrice(omsCartItem.getPrice().multiply(omsCartItem.getQuantity()));
         }
         modelMap.put("cartList",omsCartItems);
-        BigDecimal totalAmount = getTotalPrice(omsCartItems);
+        BigDecimal totalAmount = getTotalAmount(omsCartItems);
         modelMap.put("totalAmount", totalAmount);
         return "cartListInner";
     }
 
-    private BigDecimal getTotalPrice(List<OmsCartItem> omsCartItems) {
+    private BigDecimal getTotalAmount(List<OmsCartItem> omsCartItems) {
         BigDecimal totalAmount = new BigDecimal("0");
         for (OmsCartItem omsCartItem : omsCartItems) {
             if (omsCartItem.getIsChecked().equals("1")) {
@@ -101,7 +98,7 @@ public class CartController {
         for (OmsCartItem omsCartItem : omsCartItems) {
             omsCartItem.setTotalPrice(omsCartItem.getPrice().multiply(omsCartItem.getQuantity()));
         }
-        BigDecimal totalAmount = getTotalPrice(omsCartItems);
+        BigDecimal totalAmount = getTotalAmount(omsCartItems);
         modelMap.put("totalAmount", totalAmount);
         modelMap.put("cartList",omsCartItems);
         return "cartList";

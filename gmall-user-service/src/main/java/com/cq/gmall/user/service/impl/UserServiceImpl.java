@@ -4,7 +4,9 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.cq.gmall.bean.UmsMember;
+import com.cq.gmall.bean.UmsMemberReceiveAddress;
 import com.cq.gmall.service.UserService;
+import com.cq.gmall.user.mapper.UmsMemberReceiveAddressMapper;
 import com.cq.gmall.user.mapper.UserMapper;
 import com.cq.gmall.util.RedisUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -23,6 +25,8 @@ public class UserServiceImpl implements UserService {
     UserMapper userMapper;
     @Autowired
     RedisUtil redisUtil;
+    @Autowired
+    UmsMemberReceiveAddressMapper umsMemberReceiveAddressMapper;
 
     @Override
     public List<UmsMember> getAllUser() {
@@ -68,6 +72,42 @@ public class UserServiceImpl implements UserService {
             jedis.close();
         }
     }
+
+
+    /**
+     * 社交登录用户信息保存
+     *
+     * @param umsMember
+     * @return
+     */
+    @Override
+    public UmsMember addOauthUser(UmsMember umsMember) {
+        userMapper.insertSelective(umsMember);
+        UmsMember umsMember1 = new UmsMember();
+        umsMember1.setSourceUid(umsMember.getSourceUid());
+        return userMapper.selectOne(umsMember1);
+    }
+
+    /**
+     * 检查社交用户是否登陆过
+     *
+     * @param umsCheck
+     * @return
+     */
+    @Override
+    public UmsMember checkOauthUser(UmsMember umsCheck) {
+        UmsMember umsMember = userMapper.selectOne(umsCheck);
+        return umsMember;
+    }
+
+    @Override
+    public UmsMemberReceiveAddress getReceiveAddressById(String receiveAddressId) {
+        UmsMemberReceiveAddress umsMemberReceiveAddress = new UmsMemberReceiveAddress();
+        umsMemberReceiveAddress.setId(receiveAddressId);
+
+        return umsMemberReceiveAddressMapper.selectOne(umsMemberReceiveAddress);
+    }
+
 
     private UmsMember loginFromDb(UmsMember umsMember) {
         UmsMember umsMemberFromDb = userMapper.selectOne(umsMember);
