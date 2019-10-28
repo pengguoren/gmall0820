@@ -18,4 +18,6 @@ public interface OrderService {
      * @param omsOrder
      */
     void saveOrder(OmsOrder omsOrder);
+
+    OmsOrder getOrderByOutTradeNo(String outTradeNo);
 }

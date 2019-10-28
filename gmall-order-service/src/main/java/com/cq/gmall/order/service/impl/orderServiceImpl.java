@@ -2,7 +2,6 @@ package com.cq.gmall.order.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.dubbo.config.annotation.Service;
-import com.cq.gmall.bean.OmsCartItem;
 import com.cq.gmall.bean.OmsOrder;
 import com.cq.gmall.bean.OmsOrderItem;
 import com.cq.gmall.order.mapper.OmsOrderItemMapper;
@@ -73,6 +72,19 @@ public class orderServiceImpl implements OrderService {
         }
         //刷新缓存
         cartService.flushCartCache(omsOrder.getMemberId());
+    }
+
+    /**
+     * 根据外部订单号查询订单信息
+     * @param outTradeNo
+     * @return
+     */
+    @Override
+    public OmsOrder getOrderByOutTradeNo(String outTradeNo) {
+        OmsOrder omsOrder = new OmsOrder();
+        omsOrder.setOrderSn(outTradeNo);
+        omsOrderMapper.select(omsOrder);
+        return omsOrder;
     }
 
     @Override

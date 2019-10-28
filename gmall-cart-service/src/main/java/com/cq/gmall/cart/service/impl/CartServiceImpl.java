@@ -114,7 +114,6 @@ public class CartServiceImpl implements CartService {
         OmsCartItem omsCartItem = new OmsCartItem();
         omsCartItem.setProductSkuId(productSkuId);
         omsCartItemMapper.delete(omsCartItem);
-        //刷新缓存
     }
 
 
