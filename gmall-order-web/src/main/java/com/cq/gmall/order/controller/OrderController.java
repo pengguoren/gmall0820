@@ -43,6 +43,7 @@ public class OrderController {
     @Reference
     SkuService skuService;
 
+
     @RequestMapping("submitOrder")
     @LoginRequired(loginSuccess = true)
     public ModelAndView submitOrder(String receiveAddressId,BigDecimal totalAmount,String tradeCode,HttpServletRequest request, HttpServletResponse response, ModelMap ModelMap) {
@@ -87,7 +88,7 @@ public class OrderController {
             Date time = c.getTime();
             omsOrder.setReceiveTime(time);
             omsOrder.setSourceType(0);
-            omsOrder.setStatus(0);
+            omsOrder.setStatus("0");
             omsOrder.setOrderType(0);
             omsOrder.setTotalAmount(totalAmount);
 

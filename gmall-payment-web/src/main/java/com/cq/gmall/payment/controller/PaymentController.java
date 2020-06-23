@@ -61,11 +61,10 @@ public class PaymentController {
             paymentInfo.setAlipayTradeNo(trade_no);// 支付宝的交易凭证号
             paymentInfo.setCallbackContent(call_back_content);//回调请求字符串
             paymentInfo.setCallbackTime(new Date());
-
             paymentService.updatePayment(paymentInfo);
-
         }
-
+        //支付成功后，引起系统服务-》订单服务的更新-》库存服务-》物流服务。
+        //调用mq发送支付成功的信息
         return "finish";
     }
 
@@ -116,6 +115,8 @@ public class PaymentController {
         paymentInfo.setSubject("谷粒商城商品一件");
         paymentInfo.setTotalAmount(totalAmount);
         paymentService.savePaymentInfo(paymentInfo);
+        // 向消息中间件发送一个检查支付状态(支付服务消费)的延迟消息队列
+        paymentService.sendDelayPaymentResultCheckQueue(outTradeNo,5);
         //提交请求到支付宝
         return form;
     }
